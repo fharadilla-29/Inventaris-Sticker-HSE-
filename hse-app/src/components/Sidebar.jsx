@@ -31,20 +31,16 @@ const ICONS = {
   ),
 };
 
-export default function Sidebar({ activeMenu, setActiveMenu }) {
+export default function Sidebar({ activeMenu, setActiveMenu, user, onLogout }) {
   return (
     <aside className="sidebar">
       <div className="sidebar-header">
         <div className="logo">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M12 2L2 7l10 5 10-5-10-5z" />
-            <path d="M2 17l10 5 10-5" />
-            <path d="M2 12l10 5 10-5" />
-          </svg>
+          <img src="/basemindo-logo.png" alt="Basemindo" style={{ width: 32, height: 32, objectFit: 'contain', filter: 'brightness(0) invert(1)' }} />
         </div>
         <div>
-          <h2>HSE Sticker</h2>
-          <p>Inventory System</p>
+          <h2>HSE Departemen</h2>
+          <p>Anisya Shamaya Putri</p>
         </div>
       </div>
       <nav className="sidebar-nav">
@@ -60,7 +56,22 @@ export default function Sidebar({ activeMenu, setActiveMenu }) {
         ))}
       </nav>
       <div className="sidebar-footer">
-        <p>&copy; {new Date().getFullYear()} HSE Dept.</p>
+        <div className="sidebar-user">
+          <div className="sidebar-user-avatar">
+            {user?.charAt(0).toUpperCase()}
+          </div>
+          <div className="sidebar-user-info">
+            <span className="sidebar-user-name">{user}</span>
+            <span className="sidebar-user-role">HSE Admin</span>
+          </div>
+          <button className="sidebar-logout" onClick={onLogout} title="Keluar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+          </button>
+        </div>
       </div>
     </aside>
   );
