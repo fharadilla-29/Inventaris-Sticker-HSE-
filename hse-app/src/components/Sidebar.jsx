@@ -51,8 +51,8 @@ export default function Sidebar({ activeMenu, setActiveMenu, user, onLogout }) {
       </div>
       <nav className="sidebar-nav">
         {MENU_ITEMS.map((item) => {
-          if (item.id === 'divider') {
-            return <div key="divider" className="nav-divider"><span>Spanduk</span></div>;
+          if (item.id.startsWith('divider')) {
+            return <div key={item.id} className="nav-divider"><span>{item.label}</span></div>;
           }
           return (
             <button

@@ -1222,3 +1222,40 @@
   height: 1px;
   background: rgba(255,255,255,0.1);
 }
+
+/* ===== Dashboard compact layout ===== */
+.dash-page { max-width: 1300px; }
+
+.dash-stat-row {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.dash-stat-row .stat-card {
+  padding: 14px;
+  gap: 10px;
+}
+
+.dash-stat-row .stat-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.dash-stat-row .stat-icon svg { width: 18px; height: 18px; }
+.dash-stat-row .stat-value { font-size: 22px; }
+.dash-stat-row .stat-label { font-size: 11px; }
+
+/* Spanduk chart fill color (ungu) */
+.spanduk-fill { background: var(--purple) !important; }
+
+@media (max-width: 1100px) {
+  .dash-stat-row { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 700px) {
+  .dash-stat-row { grid-template-columns: repeat(2, 1fr); }
+}
