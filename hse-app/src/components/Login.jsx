@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
 // Credentials — bisa dipindah ke env variable
-const VALID_USERNAME = import.meta.env.VITE_APP_USERNAME || 'Anisya';
-const VALID_PASSWORD = import.meta.env.VITE_APP_PASSWORD || '091102';
+const VALID_USERNAME = (import.meta.env.VITE_APP_USERNAME || 'Anisya').trim();
+const VALID_PASSWORD = (import.meta.env.VITE_APP_PASSWORD || '091102').trim();
 
 export default function Login({ onLogin }) {
   const [username, setUsername] = useState('');
@@ -16,9 +16,8 @@ export default function Login({ onLogin }) {
     setError('');
     setLoading(true);
 
-    // Simulasi delay sedikit biar terasa natural
     setTimeout(() => {
-      if (username === VALID_USERNAME && password === VALID_PASSWORD) {
+      if (username.trim() === VALID_USERNAME && password.trim() === VALID_PASSWORD) {
         onLogin(username);
       } else {
         setError('Username atau password salah. Silakan coba lagi.');
@@ -29,52 +28,39 @@ export default function Login({ onLogin }) {
 
   return (
     <div className="login-page">
-      {/* Left Panel */}
-      <div className="login-left">
-        <div className="login-brand">
-          <img src="/basemindo-logo.png" alt="Basemindo Logo" className="login-logo" />
-          <div className="login-brand-text">
-            <h1>PT. Basemindo</h1>
-            <p>Aneka Rekayasa</p>
-          </div>
-        </div>
-
-        <div className="login-hero">
-          <h2>Inventory Management System</h2>
-          <p>Departemen Health, Safety & Environment</p>
-
-          <div className="login-features">
-            <div className="lf-item">
-              <span className="lf-icon">📦</span>
-              <div>
-                <strong>Stok Real-time</strong>
-                <span>Pantau inventaris sticker HSE kapan saja</span>
-              </div>
-            </div>
-            <div className="lf-item">
-              <span className="lf-icon">🏗️</span>
-              <div>
-                <strong>Distribusi per Rig</strong>
-                <span>Kelola pengeluaran ke setiap rig dengan mudah</span>
-              </div>
-            </div>
-            <div className="lf-item">
-              <span className="lf-icon">📊</span>
-              <div>
-                <strong>Laporan Lengkap</strong>
-                <span>Rekap dan export data pengeluaran sticker</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <p className="login-footer-text">
-          &copy; {new Date().getFullYear()} PT. Basemindo Aneka Rekayasa · HSE Department
-        </p>
+      {/* Floating animated bubbles */}
+      <div className="login-bubbles">
+        <span className="bubble bubble-1" />
+        <span className="bubble bubble-2" />
+        <span className="bubble bubble-3" />
+        <span className="bubble bubble-4" />
+        <span className="bubble bubble-5" />
+        <span className="bubble bubble-6" />
+        <span className="bubble bubble-7" />
+        <span className="bubble bubble-8" />
       </div>
 
-      {/* Right Panel — Form */}
-      <div className="login-right">
+      {/* Floating HSE icons */}
+      <div className="login-floaters">
+        <div className="floater floater-1">🛡️</div>
+        <div className="floater floater-2">⚠️</div>
+        <div className="floater floater-3">🏗️</div>
+        <div className="floater floater-4">📋</div>
+        <div className="floater floater-5">🦺</div>
+      </div>
+
+      {/* Center card */}
+      <div className="login-center">
+        {/* Brand header */}
+        <div className="login-brand-top">
+          <img src="/basemindo-logo.png" alt="Basemindo Logo" className="login-logo-top" />
+          <div>
+            <h1 className="login-company-name">PT. BESMINDO MATERI SEWATAMA</h1>
+            <p className="login-dept-name">Departemen Health, Safety &amp; Environment</p>
+          </div>
+        </div>
+
+        {/* Form card */}
         <div className="login-card">
           <div className="login-card-header">
             <div className="login-card-icon">
@@ -171,6 +157,10 @@ export default function Login({ onLogin }) {
             </button>
           </form>
         </div>
+
+        <p className="login-footer-text">
+          &copy; {new Date().getFullYear()} PT. BESMINDO MATERI SEWATAMA
+        </p>
       </div>
     </div>
   );

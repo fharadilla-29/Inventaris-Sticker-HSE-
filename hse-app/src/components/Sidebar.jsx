@@ -15,6 +15,12 @@ const ICONS = {
       <path d="M15 22l7-7-4-4-7 7v4z" />
     </svg>
   ),
+  spanduk: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <rect x="2" y="6" width="20" height="12" rx="2" />
+      <path d="M6 6V4M18 6V4" />
+    </svg>
+  ),
   distribution: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <path d="M12 19V5" />
@@ -36,24 +42,29 @@ export default function Sidebar({ activeMenu, setActiveMenu, user, onLogout }) {
     <aside className="sidebar">
       <div className="sidebar-header">
         <div className="logo">
-          <img src="/basemindo-logo.png" alt="Basemindo" style={{ width: 32, height: 32, objectFit: 'contain', filter: 'brightness(0) invert(1)' }} />
+          <img src="/basemindo-logo.png" alt="Basemindo" style={{ width: 32, height: 32, objectFit: 'contain' }} />
         </div>
         <div>
-          <h2>HSE Departemen</h2>
+          <h2>DEPARTEMEN HSE</h2>
           <p>Anisya Shamaya Putri</p>
         </div>
       </div>
       <nav className="sidebar-nav">
-        {MENU_ITEMS.map((item) => (
-          <button
-            key={item.id}
-            className={`nav-item ${activeMenu === item.id ? 'active' : ''}`}
-            onClick={() => setActiveMenu(item.id)}
-          >
-            <span className="nav-icon">{ICONS[item.icon]}</span>
-            <span className="nav-label">{item.label}</span>
-          </button>
-        ))}
+        {MENU_ITEMS.map((item) => {
+          if (item.id === 'divider') {
+            return <div key="divider" className="nav-divider"><span>Spanduk</span></div>;
+          }
+          return (
+            <button
+              key={item.id}
+              className={`nav-item ${activeMenu === item.id ? 'active' : ''}`}
+              onClick={() => setActiveMenu(item.id)}
+            >
+              <span className="nav-icon">{ICONS[item.icon]}</span>
+              <span className="nav-label">{item.label}</span>
+            </button>
+          );
+        })}
       </nav>
       <div className="sidebar-footer">
         <div className="sidebar-user">

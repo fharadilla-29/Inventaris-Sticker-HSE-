@@ -130,3 +130,104 @@ ALTER TABLE distributions ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Allow all on stickers" ON stickers FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Allow all on stock_in" ON stock_in FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Allow all on distributions" ON distributions FOR ALL USING (true) WITH CHECK (true);
+
+-- =====================================================
+-- SPANDUK TABLES
+-- Jalankan di Supabase SQL Editor
+-- =====================================================
+
+CREATE TABLE IF NOT EXISTS spanduk (
+  id TEXT PRIMARY KEY,
+  nama TEXT NOT NULL,
+  ukuran TEXT NOT NULL DEFAULT '',
+  stok INTEGER NOT NULL DEFAULT 0,
+  deskripsi TEXT DEFAULT '',
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS spanduk_stock_in (
+  id TEXT PRIMARY KEY,
+  spanduk_id TEXT NOT NULL REFERENCES spanduk(id) ON DELETE CASCADE,
+  jumlah INTEGER NOT NULL CHECK (jumlah > 0),
+  tanggal DATE NOT NULL,
+  catatan TEXT DEFAULT '',
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS spanduk_distributions (
+  id TEXT PRIMARY KEY,
+  batch_id TEXT NOT NULL DEFAULT '',
+  spanduk_id TEXT NOT NULL REFERENCES spanduk(id) ON DELETE CASCADE,
+  rig TEXT NOT NULL,
+  jumlah INTEGER NOT NULL CHECK (jumlah > 0),
+  tanggal DATE NOT NULL,
+  pic TEXT DEFAULT '',
+  catatan TEXT DEFAULT '',
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_spanduk_stock_in_id ON spanduk_stock_in(spanduk_id);
+CREATE INDEX IF NOT EXISTS idx_spanduk_dist_id ON spanduk_distributions(spanduk_id);
+CREATE INDEX IF NOT EXISTS idx_spanduk_dist_rig ON spanduk_distributions(rig);
+
+-- Triggers stok spanduk
+CREATE OR REPLACE FUNCTION add_stok_on_spanduk_stock_in()
+RETURNS TRIGGER AS $$
+BEGIN
+  UPDATE spanduk SET stok = stok + NEW.jumlah WHERE id = NEW.spanduk_id;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_add_stok_spanduk
+  AFTER INSERT ON spanduk_stock_in
+  FOR EACH ROW EXECUTE FUNCTION add_stok_on_spanduk_stock_in();
+
+CREATE OR REPLACE FUNCTION sub_stok_on_spanduk_dist()
+RETURNS TRIGGER AS $$
+DECLARE current_stok INTEGER;
+BEGIN
+  SELECT stok INTO current_stok FROM spanduk WHERE id = NEW.spanduk_id;
+  IF current_stok IS NULL THEN RAISE EXCEPTION 'Spanduk tidak ditemukan'; END IF;
+  IF current_stok < NEW.jumlah THEN RAISE EXCEPTION 'Stok tidak mencukupi. Tersedia: %, Diminta: %', current_stok, NEW.jumlah; END IF;
+  UPDATE spanduk SET stok = stok - NEW.jumlah WHERE id = NEW.spanduk_id;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_sub_stok_spanduk
+  AFTER INSERT ON spanduk_distributions
+  FOR EACH ROW EXECUTE FUNCTION sub_stok_on_spanduk_dist();
+
+CREATE OR REPLACE FUNCTION revert_stok_on_spanduk_stock_in_delete()
+RETURNS TRIGGER AS $$
+BEGIN
+  UPDATE spanduk SET stok = stok - OLD.jumlah WHERE id = OLD.spanduk_id;
+  RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_revert_spanduk_stock_in
+  AFTER DELETE ON spanduk_stock_in
+  FOR EACH ROW EXECUTE FUNCTION revert_stok_on_spanduk_stock_in_delete();
+
+CREATE OR REPLACE FUNCTION revert_stok_on_spanduk_dist_delete()
+RETURNS TRIGGER AS $$
+BEGIN
+  UPDATE spanduk SET stok = stok + OLD.jumlah WHERE id = OLD.spanduk_id;
+  RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_revert_spanduk_dist
+  AFTER DELETE ON spanduk_distributions
+  FOR EACH ROW EXECUTE FUNCTION revert_stok_on_spanduk_dist_delete();
+
+-- RLS
+ALTER TABLE spanduk ENABLE ROW LEVEL SECURITY;
+ALTER TABLE spanduk_stock_in ENABLE ROW LEVEL SECURITY;
+ALTER TABLE spanduk_distributions ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Allow all on spanduk" ON spanduk FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "Allow all on spanduk_stock_in" ON spanduk_stock_in FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "Allow all on spanduk_distributions" ON spanduk_distributions FOR ALL USING (true) WITH CHECK (true);

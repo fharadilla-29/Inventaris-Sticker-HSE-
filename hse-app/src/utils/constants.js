@@ -46,4 +46,8 @@ export const MENU_ITEMS = [
   { id: 'stok-sticker', label: 'Stok Sticker', icon: 'sticker' },
   { id: 'distribution', label: 'Stok Keluar', icon: 'distribution' },
   { id: 'reports', label: 'Laporan', icon: 'reports' },
+  { id: 'divider', label: '', icon: '' },
+  { id: 'stok-spanduk', label: 'Stok Spanduk', icon: 'spanduk' },
+  { id: 'distribution-spanduk', label: 'Stok Keluar Spanduk', icon: 'distribution' },
+  { id: 'reports-spanduk', label: 'Laporan Spanduk', icon: 'reports' },
 ];
