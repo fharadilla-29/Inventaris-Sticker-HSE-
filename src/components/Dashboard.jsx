@@ -4,7 +4,7 @@ import { getSpanduk, getSpandukDistributions } from '../utils/storage';
 import { getStokStatus } from '../utils/stokHelper';
 import { RIG_LIST } from '../utils/constants';
 
-export default function Dashboard() {
+export default function Dashboard({ onNavigate }) {
   const [stickers, setStickers] = useState([]);
   const [distributions, setDistributions] = useState([]);
   const [spanduk, setSpanduk] = useState([]);
@@ -71,7 +71,7 @@ export default function Dashboard() {
       {/* ===== STAT CARDS ===== */}
       <div className="dash-stat-row">
         {/* Sticker */}
-        <div className="stat-card stat-blue">
+        <div className="stat-card stat-blue dash-clickable" onClick={() => onNavigate('stok-sticker')} title="Lihat Daftar Sticker">
           <div className="stat-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 11.5V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h7.5"/><path d="M15 22l7-7-4-4-7 7v4z"/></svg>
           </div>
@@ -79,8 +79,9 @@ export default function Dashboard() {
             <span className="stat-value">{stickers.length}</span>
             <span className="stat-label">Jenis Sticker</span>
           </div>
+          <span className="stat-arrow">›</span>
         </div>
-        <div className="stat-card stat-green">
+        <div className="stat-card stat-green dash-clickable" onClick={() => onNavigate('stok-sticker')} title="Lihat Stok Sticker">
           <div className="stat-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5v14M5 12h14"/></svg>
           </div>
@@ -88,8 +89,9 @@ export default function Dashboard() {
             <span className="stat-value">{totalStok}</span>
             <span className="stat-label">Stok Sticker</span>
           </div>
+          <span className="stat-arrow">›</span>
         </div>
-        <div className="stat-card stat-orange">
+        <div className="stat-card stat-orange dash-clickable" onClick={() => onNavigate('distribution')} title="Lihat Stok Keluar Sticker">
           <div className="stat-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
           </div>
@@ -97,9 +99,10 @@ export default function Dashboard() {
             <span className="stat-value">{totalKeluar}</span>
             <span className="stat-label">Keluar Sticker</span>
           </div>
+          <span className="stat-arrow">›</span>
         </div>
         {/* Spanduk */}
-        <div className="stat-card stat-purple">
+        <div className="stat-card stat-purple dash-clickable" onClick={() => onNavigate('stok-spanduk')} title="Lihat Daftar Spanduk">
           <div className="stat-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 6V4M18 6V4"/></svg>
           </div>
@@ -107,8 +110,9 @@ export default function Dashboard() {
             <span className="stat-value">{spanduk.length}</span>
             <span className="stat-label">Jenis Spanduk</span>
           </div>
+          <span className="stat-arrow">›</span>
         </div>
-        <div className="stat-card stat-green">
+        <div className="stat-card stat-green dash-clickable" onClick={() => onNavigate('stok-spanduk')} title="Lihat Stok Spanduk">
           <div className="stat-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5v14M5 12h14"/></svg>
           </div>
@@ -116,8 +120,9 @@ export default function Dashboard() {
             <span className="stat-value">{totalStokSp}</span>
             <span className="stat-label">Stok Spanduk</span>
           </div>
+          <span className="stat-arrow">›</span>
         </div>
-        <div className="stat-card stat-orange">
+        <div className="stat-card stat-orange dash-clickable" onClick={() => onNavigate('distribution-spanduk')} title="Lihat Stok Keluar Spanduk">
           <div className="stat-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
           </div>
@@ -125,13 +130,14 @@ export default function Dashboard() {
             <span className="stat-value">{totalKeluarSp}</span>
             <span className="stat-label">Keluar Spanduk</span>
           </div>
+          <span className="stat-arrow">›</span>
         </div>
       </div>
 
       {/* ===== ROW 2: Grafik ===== */}
       <div className="dash-row" style={{ marginBottom: '16px' }}>
         {/* Chart Sticker */}
-        <div className="card flex-1">
+        <div className="card flex-1 dash-clickable" onClick={() => onNavigate('distribution')} title="Lihat Stok Keluar Sticker">
           <div className="card-header">
             <h3>Stok Keluar Sticker per Rig</h3>
             <span className="card-sub">Total: {totalKeluar} unit</span>
@@ -156,7 +162,7 @@ export default function Dashboard() {
         </div>
 
         {/* Chart Spanduk */}
-        <div className="card flex-1">
+        <div className="card flex-1 dash-clickable" onClick={() => onNavigate('distribution-spanduk')} title="Lihat Stok Keluar Spanduk">
           <div className="card-header">
             <h3>Stok Keluar Spanduk per Rig</h3>
             <span className="card-sub">Total: {totalKeluarSp} unit</span>
@@ -184,7 +190,7 @@ export default function Dashboard() {
       {/* ===== ROW 3: Stok Kritis ===== */}
       <div className="dash-row">
         {/* Stiker Kritis */}
-        <div className="card flex-1">
+        <div className="card flex-1 dash-clickable" onClick={() => onNavigate('stok-sticker')} title="Lihat Daftar Sticker">
           <div className="card-header">
             <h3>Sticker Kritis</h3>
             <span className="card-sub">{stokKritis.length} item · ≤ 20 unit</span>
@@ -217,7 +223,7 @@ export default function Dashboard() {
         </div>
 
         {/* Spanduk Kritis */}
-        <div className="card flex-1">
+        <div className="card flex-1 dash-clickable" onClick={() => onNavigate('stok-spanduk')} title="Lihat Daftar Spanduk">
           <div className="card-header">
             <h3>Spanduk Kritis</h3>
             <span className="card-sub">{spKritis.length} item · ≤ 20 unit</span>

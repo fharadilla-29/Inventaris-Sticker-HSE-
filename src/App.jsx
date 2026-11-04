@@ -29,7 +29,7 @@ function App() {
 
   function renderPage() {
     switch (activeMenu) {
-      case 'dashboard': return <Dashboard />;
+      case 'dashboard': return <Dashboard onNavigate={setActiveMenu} />;
       case 'stok-sticker': return <StokSticker />;
       case 'distribution': return <Distribution />;
       case 'reports': return <Reports />;
