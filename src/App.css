@@ -1453,3 +1453,53 @@
 
 /* ===== Login card body ===== */
 .login-card-body { padding: 28px 28px 24px; }
+
+/* ===== Dashboard Clickable Cards ===== */
+.dash-clickable {
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  position: relative;
+}
+
+.dash-clickable:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+.dash-clickable:active {
+  transform: translateY(-1px);
+}
+
+/* Panah navigasi di stat card */
+.stat-arrow {
+  font-size: 20px;
+  color: var(--text-muted);
+  opacity: 0.4;
+  margin-left: auto;
+  transition: opacity 0.15s, transform 0.15s;
+  line-height: 1;
+}
+
+.dash-clickable:hover .stat-arrow {
+  opacity: 1;
+  transform: translateX(3px);
+}
+
+/* Tooltip hint di pojok kanan atas card */
+.dash-clickable::after {
+  content: '→';
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-size: 13px;
+  color: var(--primary);
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+/* Hanya untuk .card (grafik & kritis), bukan stat-card yang sudah ada stat-arrow */
+.card.dash-clickable::after { opacity: 0; }
+.card.dash-clickable:hover::after { opacity: 0.6; }
+
+/* Stat card tidak perlu ::after karena ada stat-arrow */
+.stat-card.dash-clickable::after { display: none; }
