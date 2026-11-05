@@ -51,4 +51,6 @@ export const MENU_ITEMS = [
   { id: 'stok-spanduk', label: 'Stok Spanduk', icon: 'spanduk' },
   { id: 'distribution-spanduk', label: 'Stok Keluar', icon: 'distribution' },
   { id: 'reports-spanduk', label: 'Laporan', icon: 'reports' },
+  { id: 'divider-orders', label: 'Pesanan', icon: '' },
+  { id: 'orders', label: 'Manajemen Pesanan', icon: 'orders' },
 ];

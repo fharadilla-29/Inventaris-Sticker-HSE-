@@ -301,7 +301,7 @@ export async function addSpandukStockInBatch(records) {
 
 // Upload gambar ke bucket 'hse-images', return public URL
 export async function uploadImage(file, folder = 'sticker') {
-  const ext = file.name.split('.').pop();
+  const ext = file.name.split('.').pop().toLowerCase();
   const fileName = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
 
   const { error } = await supabase.storage
@@ -320,4 +320,59 @@ export async function deleteImage(url) {
   const path = url.split('/hse-images/')[1];
   if (!path) return;
   await supabase.storage.from('hse-images').remove([path]);
+}
+
+// =====================================================
+// ORDERS (Pemesanan HSE Coordinator)
+// =====================================================
+
+export async function getOrders() {
+  const { data, error } = await supabase
+    .from('orders')
+    .select('*')
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  return data;
+}
+
+export async function addOrder(order) {
+  const now = Date.now();
+  const newOrder = {
+    id: `ORD-${now}`,
+    order_number: `HSE-${new Date().getFullYear()}-${String(now).slice(-6)}`,
+    item_type: order.item_type,
+    item_id: order.item_id,
+    item_nama: order.item_nama,
+    item_ukuran: order.item_ukuran || '',
+    jumlah: order.jumlah,
+    rig: order.rig,
+    pic: order.pic,
+    catatan: order.catatan || '',
+    status: 'pending',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  };
+  const { data, error } = await supabase
+    .from('orders')
+    .insert(newOrder)
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function updateOrderStatus(id, status) {
+  const { data, error } = await supabase
+    .from('orders')
+    .update({ status, updated_at: new Date().toISOString() })
+    .eq('id', id)
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function deleteOrder(id) {
+  const { error } = await supabase.from('orders').delete().eq('id', id);
+  if (error) throw error;
 }

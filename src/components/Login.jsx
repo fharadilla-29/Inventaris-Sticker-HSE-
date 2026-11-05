@@ -2,6 +2,8 @@ import { useState } from 'react';
 
 const VALID_USERNAME = (import.meta.env.VITE_APP_USERNAME || 'Anisya').trim();
 const VALID_PASSWORD = (import.meta.env.VITE_APP_PASSWORD || '091102').trim();
+const COORD_USERNAME = (import.meta.env.VITE_COORD_USERNAME || 'coordinator').trim();
+const COORD_PASSWORD = (import.meta.env.VITE_COORD_PASSWORD || 'hse2024').trim();
 
 export default function Login({ onLogin }) {
   const [username, setUsername] = useState('');
@@ -16,7 +18,9 @@ export default function Login({ onLogin }) {
     setLoading(true);
     setTimeout(() => {
       if (username.trim() === VALID_USERNAME && password.trim() === VALID_PASSWORD) {
-        onLogin(username);
+        onLogin(username, 'admin');
+      } else if (username.trim() === COORD_USERNAME && password.trim() === COORD_PASSWORD) {
+        onLogin(username, 'coordinator');
       } else {
         setError('Username atau password salah. Silakan coba lagi.');
       }
@@ -38,13 +42,13 @@ export default function Login({ onLogin }) {
         <span className="bubble bubble-8" />
       </div>
 
-      {/* Floating HSE icons */}
+      {/* Floating Besmindo logos */}
       <div className="login-floaters">
-        <div className="floater floater-1">🛡️</div>
-        <div className="floater floater-2">⚠️</div>
-        <div className="floater floater-3">🏗️</div>
-        <div className="floater floater-4">📋</div>
-        <div className="floater floater-5">🦺</div>
+        <div className="floater floater-1"><img src="/basemindo-logo.png" alt="" /></div>
+        <div className="floater floater-2"><img src="/basemindo-logo.png" alt="" /></div>
+        <div className="floater floater-3"><img src="/basemindo-logo.png" alt="" /></div>
+        <div className="floater floater-4"><img src="/basemindo-logo.png" alt="" /></div>
+        <div className="floater floater-5"><img src="/basemindo-logo.png" alt="" /></div>
       </div>
 
       {/* Center card */}

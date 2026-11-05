@@ -35,9 +35,16 @@ const ICONS = {
       <path d="M14 10h2v8h-2z" />
     </svg>
   ),
+  orders: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+      <line x1="3" y1="6" x2="21" y2="6"/>
+      <path d="M16 10a4 4 0 0 1-8 0"/>
+    </svg>
+  ),
 };
 
-export default function Sidebar({ activeMenu, setActiveMenu, user, onLogout }) {
+export default function Sidebar({ activeMenu, setActiveMenu, user, onLogout, pendingCount = 0 }) {
   return (
     <aside className="sidebar">
       <div className="sidebar-header">
@@ -62,6 +69,9 @@ export default function Sidebar({ activeMenu, setActiveMenu, user, onLogout }) {
             >
               <span className="nav-icon">{ICONS[item.icon]}</span>
               <span className="nav-label">{item.label}</span>
+              {item.id === 'orders' && pendingCount > 0 && (
+                <span className="nav-badge">{pendingCount}</span>
+              )}
             </button>
           );
         })}

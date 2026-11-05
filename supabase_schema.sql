@@ -238,3 +238,29 @@ CREATE POLICY "Allow all on spanduk_distributions" ON spanduk_distributions FOR 
 -- =====================================================
 ALTER TABLE stickers ADD COLUMN IF NOT EXISTS image_url TEXT DEFAULT '';
 ALTER TABLE spanduk ADD COLUMN IF NOT EXISTS image_url TEXT DEFAULT '';
+
+-- =====================================================
+-- ORDERS TABLE (Pemesanan dari HSE Coordinator)
+-- Jalankan di Supabase SQL Editor
+-- =====================================================
+CREATE TABLE IF NOT EXISTS orders (
+  id TEXT PRIMARY KEY,
+  order_number TEXT NOT NULL,
+  item_type TEXT NOT NULL CHECK (item_type IN ('sticker', 'spanduk')),
+  item_id TEXT NOT NULL,
+  item_nama TEXT NOT NULL,
+  item_ukuran TEXT DEFAULT '',
+  jumlah INTEGER NOT NULL CHECK (jumlah > 0),
+  rig TEXT NOT NULL,
+  pic TEXT NOT NULL,
+  catatan TEXT DEFAULT '',
+  status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected', 'delivered')),
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status);
+CREATE INDEX IF NOT EXISTS idx_orders_item_type ON orders(item_type);
+
+ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Allow all on orders" ON orders FOR ALL USING (true) WITH CHECK (true);
