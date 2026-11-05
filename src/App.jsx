@@ -9,7 +9,6 @@ import Reports from './components/Reports';
 import StokSpanduk from './components/StokSpanduk';
 import DistributionSpanduk from './components/DistributionSpanduk';
 import ReportsSpanduk from './components/ReportsSpanduk';
-import OrderManagement from './components/OrderManagement';
 import CoordinatorView from './components/CoordinatorView';
 import MyOrders from './components/MyOrders';
 import OrderNotifBanner from './components/OrderNotifBanner';
@@ -28,7 +27,6 @@ function AppAdmin({ user, role, activeMenu, setActiveMenu, handleLogout }) {
       case 'stok-spanduk':         return <StokSpanduk />;
       case 'distribution-spanduk': return <DistributionSpanduk />;
       case 'reports-spanduk':      return <ReportsSpanduk />;
-      case 'orders':               return <OrderManagement />;
       default:                     return <Dashboard onNavigate={setActiveMenu} />;
     }
   }
